@@ -1,11 +1,21 @@
 ---
 title: "r_intro PS 2"
 author: "Nicholus Tint Zaw"
+answer by: "Ohn Mar Zin"
 date: "2022-11-10"
 output: pdf_document
 ---
 
+
+```{r}
+install.packages("tidyverse")
+
+```
+
+
+
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = TRUE)
 
 ```
@@ -28,6 +38,18 @@ Let's go back to the previous exercise on implementation of the sampling distrib
 means_list_1 <- data.frame(cbind(number, mean_list))
 
 ```
+```{r}
+df_1<-iris
+means_list <- replicate(n = 100, expr = mean(sample(df_1$Sepal.Length, size = 10, replace=TRUE)))
+
+test <- rep(1, 100)
+test
+
+means_list_1 <- data.frame(cbind(test, means_list))
+means_list_1
+
+```
+
 
 Repeat the same process from numbers 1 to 4, but using different sample size and replication number this time. 
 
@@ -35,6 +57,35 @@ Repeat the same process from numbers 1 to 4, but using different sample size and
 + for `means_list_3`, using a sample size 50 and replication time 1,000.  
 + for `means_list_4`, using a sample size 50 and replication time 3,000.  
 + for `means_list_5`, using a sample size 50 and replication time 10,000.  
+
+```{r}
+means_list <- replicate(n = 200, expr = mean(sample(df_1$Sepal.Length, size = 30, replace=TRUE)))
+
+test <- rep(2, 200)
+
+means_list_2 <- data.frame(cbind(test, means_list))
+means_list_2
+
+means_list <- replicate(n = 1000, expr = mean(sample(df_1$Sepal.Length, size = 50, replace=TRUE)))
+test <- rep(3, 1000)
+
+
+means_list_3 <- data.frame(cbind(test, means_list))
+means_list_3
+
+means_list<- replicate(n = 3000, expr = mean(sample(df_1$Sepal.Length, size = 50, replace=TRUE)))
+test <- rep(4,3000)
+
+means_list_4 <- data.frame(cbind(test, means_list))
+means_list_4
+
+means_list <- replicate(n = 10000, expr = mean(sample(df_1$Sepal.Length, size = 50, replace=TRUE)))
+test <- rep(5,10000)
+
+means_list_5 <- data.frame(cbind(test, means_list))
+means_list_5
+
+```
 
 
 This time, we are going to create the list to store all those `means_list_x` (where `x` `1:5`) and assigned that list as `means_seris`. 
@@ -47,16 +98,42 @@ For example, if we use the following command, we can get the first dataframe. Yo
 ```
 means_seris[[1]]
 ```
+```{r}
+
+means_seris <- list("1" = means_list_1,
+                  "2" =  means_list_2, 
+                    "3" = means_list_3, 
+                   "4" =  means_list_4, 
+                   "5" =  means_list_5)
+ 
+means_seris
+
+
+
+mean[[1]]
+mean[[2]]
+mean[[3]]
+mean[[4]]
+mean[[5]]
+
+
+```
+
 
 2. Using `bind_rows()` function to combined all dataset from `means_seris` and assigned into object called `df_means_combined`. Please make sure that your result dataset should have `14300` observations and 2 variables; `test` and `mean_list`. 
 
 3. Finally, calculate the mean value for each group of `test` using following example. In this exercise, we are going to use `group_by` function from the `tidyverse` packge and `%>%` operator (pipe operator). 
+```{r}
+df_means_conbined <- bind_rows(means_seris)
+
+```
+
 
 ```{r, message = FALSE}
 library(tidyverse)
 
-iris %>%
-  group_by(Species) %>%
-  summarise(mean = mean(Sepal.Length))
+df_means_conbined %>%
+  group_by(test) %>%
+  summarise(mean = mean(means_list))
 
 ```
