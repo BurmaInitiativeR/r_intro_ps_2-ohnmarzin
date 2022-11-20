@@ -8,7 +8,8 @@ output: pdf_document
 
 
 ```{r}
-install.packages("tidyverse")
+
+library(tidyverse)
 
 ```
 
@@ -43,7 +44,7 @@ df_1<-iris
 means_list <- replicate(n = 100, expr = mean(sample(df_1$Sepal.Length, size = 10, replace=TRUE)))
 
 test <- rep(1, 100)
-test
+
 
 means_list_1 <- data.frame(cbind(test, means_list))
 means_list_1
@@ -99,13 +100,11 @@ For example, if we use the following command, we can get the first dataframe. Yo
 means_seris[[1]]
 ```
 ```{r}
-
-means_seris <- list("1" = means_list_1,
-                  "2" =  means_list_2, 
-                    "3" = means_list_3, 
-                   "4" =  means_list_4, 
-                   "5" =  means_list_5)
- 
+means_seris <- list(means_list_1,
+                   means_list_2, 
+                    means_list_3, 
+                    means_list_4, 
+                    means_list_5)
 means_seris
 
 
